@@ -13,7 +13,15 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "gopls", "docker_compose_language_service", "dockerls", "ts_ls" },
+				ensure_installed = {
+					"lua_ls",
+					"gopls",
+					"docker_compose_language_service",
+					"dockerls",
+					"ts_ls",
+					"rust_analyzer",
+					"pylsp",
+				},
 			})
 		end,
 	},
@@ -47,6 +55,34 @@ return {
 					"typescript",
 					"typescriptreact",
 					"typescript.tsx",
+				},
+				init_options = {
+					preferences = {
+						disableSuggestions = true,
+					},
+				},
+			})
+			lspconfig.rust_analyzer.setup({
+				settings = {
+					["rust-analyzer"] = {
+						diagnostics = {
+							enable = false,
+						},
+					},
+				},
+			})
+			require("lspconfig").pylsp.setup({
+				cmd = { "pylsp" },
+				filetypes = { "python" },
+				settings = {
+					pylsp = {
+						plugins = {
+							pycodestyle = {
+								ignore = { "W391" },
+								maxLineLength = 100,
+							},
+						},
+					},
 				},
 			})
 			vim.keymap.set("n", "I", vim.lsp.buf.hover, {})
